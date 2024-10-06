@@ -1,6 +1,8 @@
 /*
 Component where we can vote for out favorite framework, adn then when we submit, it will show
 the results down below, and we are gonna keep track of it with a map
+
+Using map to track some data project
 */
 
 const poll = new Map();
@@ -36,7 +38,28 @@ function submitForm(e){
 // and then we want to pass in as the value the voteCount, whatever the voteCount is + 1, becasue its getting a vote.
   poll.set(selectedOption.value, voteCount + 1);
 // Once we did that, we want to display the results
-console.log(poll)
+  displayResults();
+
+  // Disable form fields after submit:
+  document.querySelector('#poll-form')
+  .querySelectorAll('input, button')
+  .forEach((el)=> el.setAttribute('disabled', true));
+};
+
+function displayResults(){
+    const results = document.querySelector('#results');
+    results.innerHTML = ''; // make it empty first
+    for (let [option, votes] of poll) { // option: React, votes: 1
+        const optionElement = document.createElement('div');
+        optionElement.classList.add(
+            'border-bottom',
+            'p-2',
+            'd-flex',
+            'justify-content-between'
+        );
+        optionElement.innerHTML = `<strong>${option}: </strong> ${votes} votes`;
+        results.appendChild(optionElement);
+    }
 }
 
 document.querySelector('#poll-form').addEventListener('submit', submitForm);
